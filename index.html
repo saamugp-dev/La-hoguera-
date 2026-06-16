@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Hoguera · Restaurante & Bar</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <style>
+    /* ── Variables ── */
+    :root {
+      --rojo:    #C0392B;
+      --rojo-oscuro: #922B21;
+      --crema:   #F9F4EC;
+      --carbon:  #1A1A1A;
+      --gris:    #6B6B6B;
+      --font-display: 'Playfair Display', serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--carbon); background: #fff; }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(8px);
+      padding: 1rem 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: background 0.3s;
+    }
+    .navbar-brand {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: #fff !important;
+      letter-spacing: 0.04em;
+    }
+    .navbar-brand span { color: var(--rojo); }
+    .nav-link {
+      color: rgba(255,255,255,0.8) !important;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0.5rem;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff !important; }
+    .navbar-toggler { border-color: rgba(255,255,255,0.3); }
+    .navbar-toggler-icon { filter: invert(1); }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.6) 100%),
+        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      padding: 6rem 1.5rem 4rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 1.2rem;
+    }
+    .hero-title span { color: var(--rojo); }
+    .hero-subtitle {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+    .btn-fuego {
+      background: var(--rojo);
+      color: #fff;
+      border: none;
+      padding: 0.85rem 2.4rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 0;
+      transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-fuego:hover { background: var(--rojo-oscuro); color: #fff; transform: translateY(-1px); }
+    .btn-outline-fuego {
+      border: 1px solid rgba(255,255,255,0.6);
+      color: #fff;
+      padding: 0.85rem 2.4rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 0;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      margin-left: 1rem;
+    }
+    .btn-outline-fuego:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* ── Franja de datos ── */
+    .franja {
+      background: var(--carbon);
+      color: #fff;
+      padding: 1.4rem 0;
+    }
+    .franja-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.75);
+    }
+    .franja-item i { color: var(--rojo); font-size: 1.1rem; }
+
+    /* ── Secciones generales ── */
+    .seccion { padding: 5rem 0; }
+    .seccion-crema { background: var(--crema); }
+    .seccion-titulo {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .linea-roja {
+      width: 48px;
+      height: 3px;
+      background: var(--rojo);
+      margin: 0.8rem 0 2rem;
+    }
+    .linea-roja.centrada { margin-left: auto; margin-right: auto; }
+
+    /* ── Nosotros ── */
+    .nosotros-img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+    }
+    .nosotros-texto p {
+      color: var(--gris);
+      line-height: 1.9;
+      font-size: 0.97rem;
+      margin-bottom: 1.2rem;
+    }
+    .stat-box {
+      border-left: 3px solid var(--rojo);
+      padding: 0.4rem 0 0.4rem 1rem;
+      margin-bottom: 1rem;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--gris); letter-spacing: 0.05em; }
+
+    /* ── Menú ── */
+    .cat-btn {
+      border: 1px solid var(--carbon);
+      background: transparent;
+      color: var(--carbon);
+      padding: 0.45rem 1.4rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 0;
+    }
+    .cat-btn.active, .cat-btn:hover {
+      background: var(--rojo);
+      border-color: var(--rojo);
+      color: #fff;
+    }
+    .plato-card {
+      border-bottom: 1px solid #e8e2d9;
+      padding: 1.2rem 0;
+    }
+    .plato-card:last-child { border-bottom: none; }
+    .plato-nombre {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .plato-desc { font-size: 0.83rem; color: var(--gris); margin-top: 0.2rem; }
+    .plato-precio {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--rojo);
+      white-space: nowrap;
+    }
+    .menu-cat { display: none; }
+    .menu-cat.activo { display: block; }
+
+    /* ── Galería ── */
+    .galeria-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 6px;
+    }
+    .galeria-grid img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .galeria-grid img:hover { transform: scale(1.03); }
+    .galeria-grid .grande {
+      grid-column: 1 / 3;
+      height: 320px;
+    }
+    @media (max-width: 768px) {
+      .galeria-grid { grid-template-columns: 1fr 1fr; }
+      .galeria-grid .grande { grid-column: 1 / 3; height: 200px; }
+      .galeria-grid img { height: 160px; }
+    }
+
+    /* ── Reservas ── */
+    .reserva-form label {
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 0.3rem;
+    }
+    .reserva-form .form-control, .reserva-form .form-select {
+      border-radius: 0;
+      border: 1px solid #d9d3c8;
+      background: #fff;
+      font-size: 0.93rem;
+      padding: 0.65rem 0.9rem;
+      color: var(--carbon);
+    }
+    .reserva-form .form-control:focus, .reserva-form .form-select:focus {
+      box-shadow: none;
+      border-color: var(--rojo);
+    }
+
+    /* ── Contacto ── */
+    .contacto-dato {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .contacto-icono {
+      width: 44px;
+      height: 44px;
+      background: var(--rojo);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .contacto-dato h6 {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 0.15rem;
+    }
+    .contacto-dato p { font-size: 0.93rem; margin: 0; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--carbon);
+      color: rgba(255,255,255,0.55);
+      padding: 2.5rem 0;
+      font-size: 0.82rem;
+    }
+    footer .brand {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    footer .brand span { color: var(--rojo); }
+    .social-link {
+      color: rgba(255,255,255,0.5);
+      font-size: 1.2rem;
+      margin-right: 0.8rem;
+      transition: color 0.2s;
+    }
+    .social-link:hover { color: var(--rojo); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#">La <span>Hoguera</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="#menu">Menú</a></li>
+        <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reservas">Reservas</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div>
+    <p class="hero-eyebrow">Desde 1998 · Galicia, España</p>
+    <h1 class="hero-title">La <span>Hoguera</span></h1>
+    <p class="hero-subtitle">Cocina de brasas y tradición gallega. Donde el fuego transforma ingredientes del mar y la tierra en experiencias inolvidables.</p>
+    <a href="#menu" class="btn-fuego">Ver menú</a>
+    <a href="#reservas" class="btn-outline-fuego">Reservar mesa</a>
+  </div>
+</section>
+
+<div class="franja">
+  <div class="container">
+    <div class="row justify-content-center text-center g-3">
+      <div class="col-6 col-md-3">
+        <div class="franja-item justify-content-center">
+          <i class="bi bi-clock"></i>
+          <span>Mar–Dom · 13:00–16:00 · 20:00–23:30</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="franja-item justify-content-center">
+          <i class="bi bi-geo-alt"></i>
+          <span>Rúa do Paseo 12, Ourense</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="franja-item justify-content-center">
+          <i class="bi bi-telephone"></i>
+          <span>+34 988 000 111</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="franja-item justify-content-center">
+          <i class="bi bi-star-fill"></i>
+          <span>4.8 · Más de 800 reseñas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="nosotros" class="seccion">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <img
+          src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800&q=80"
+          alt="Interior del restaurante La Hoguera"
+          class="nosotros-img"
+        />
+      </div>
+      <div class="col-lg-6 nosotros-texto">
+        <p class="hero-eyebrow" style="color:var(--rojo)">Nuestra historia</p>
+        <h2 class="seccion-titulo">El sabor de lo auténtico</h2>
+        <div class="linea-roja"></div>
+        <p>La Hoguera nació en 1998 de las manos de la familia Ramos, con una idea sencilla: traer a la mesa los mejores productos gallegos cocinados a las brasas, sin artificios.</p>
+        <p>Hoy, más de veinticinco años después, seguimos fieles a esa filosofía. Cada plato respeta la temporada, el productor local y la llama que le da nombre al restaurante.</p>
+        <div class="row mt-4">
+          <div class="col-4">
+            <div class="stat-box">
+              <div class="stat-num">+25</div>
+              <div class="stat-label">Años abiertos</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="stat-box">
+              <div class="stat-num">800+</div>
+              <div class="stat-label">Reseñas 5★</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="stat-box">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Producto local</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="seccion seccion-crema">
+  <div class="container">
+    <div class="text-center">
+      <p class="hero-eyebrow" style="color:var(--rojo)">Lo que ofrecemos</p>
+      <h2 class="seccion-titulo">Nuestra carta</h2>
+      <div class="linea-roja centrada"></div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+      <button class="cat-btn active" onclick="mostrarCat('entrantes', this)">Entrantes</button>
+      <button class="cat-btn" onclick="mostrarCat('carnes', this)">Carnes</button>
+      <button class="cat-btn" onclick="mostrarCat('pescados', this)">Pescados</button>
+      <button class="cat-btn" onclick="mostrarCat('postres', this)">Postres</button>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <div id="cat-entrantes" class="menu-cat activo">
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Pulpo á feira</div>
+              <div class="plato-desc">Pulpo gallego, pimentón de La Vera, aceite virgen extra</div>
+            </div>
+            <div class="plato-precio ms-3">16,50 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Croquetas de lacón</div>
+              <div class="plato-desc">Bechamel artesanal, lacón curado, rebozado crujiente</div>
+            </div>
+            <div class="plato-precio ms-3">9,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Zamburiñas a la brasa</div>
+              <div class="plato-desc">Zamburiñas gallegas, mantequilla de albahaca, limón</div>
+            </div>
+            <div class="plato-precio ms-3">14,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Tabla de quesos gallegos</div>
+              <div class="plato-desc">San Simón, tetilla, Arzúa-Ulloa, membrillo casero</div>
+            </div>
+            <div class="plato-precio ms-3">12,50 €</div>
+          </div>
+        </div>
+
+        <div id="cat-carnes" class="menu-cat">
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Chuletón de buey a la brasa</div>
+              <div class="plato-desc">Maduración 45 días, sal en escamas, chimichurri de la casa (precio por kg)</div>
+            </div>
+            <div class="plato-precio ms-3">68,00 €/kg</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Secreto ibérico</div>
+              <div class="plato-desc">Secreto de cerdo ibérico, pimientos de padrón, patatas bravas</div>
+            </div>
+            <div class="plato-precio ms-3">19,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Costillar de ternera</div>
+              <div class="plato-desc">Costillar a baja temperatura, glaseado de miel y soja, puré de patata</div>
+            </div>
+            <div class="plato-precio ms-3">24,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Pollo de aldea asado</div>
+              <div class="plato-desc">Pollo de corral gallego, hierbas aromáticas, patatas al horno</div>
+            </div>
+            <div class="plato-precio ms-3">17,50 €</div>
+          </div>
+        </div>
+
+        <div id="cat-pescados" class="menu-cat">
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Rodaballo a la parrilla</div>
+              <div class="plato-desc">Rodaballo salvaje, ajada gallega, verduras de temporada</div>
+            </div>
+            <div class="plato-precio ms-3">32,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Merluza de pincho</div>
+              <div class="plato-desc">Merluza del Cantábrico, salsa verde, almejas</div>
+            </div>
+            <div class="plato-precio ms-3">22,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Vieiras rellenas</div>
+              <div class="plato-desc">Vieiras gallegas, sofrito de cebolla y jamón, gratinadas</div>
+            </div>
+            <div class="plato-precio ms-3">18,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Navajas a la plancha</div>
+              <div class="plato-desc">Navajas frescas, ajo, perejil, aceite virgen extra</div>
+            </div>
+            <div class="plato-precio ms-3">13,00 €</div>
+          </div>
+        </div>
+
+        <div id="cat-postres" class="menu-cat">
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Tarta de Santiago</div>
+              <div class="plato-desc">Receta tradicional, almendra de Galicia, azúcar glas</div>
+            </div>
+            <div class="plato-precio ms-3">5,50 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Filloas con nata</div>
+              <div class="plato-desc">Filloas caseras, nata montada, miel de Galicia</div>
+            </div>
+            <div class="plato-precio ms-3">6,00 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Brownie de chocolate</div>
+              <div class="plato-desc">Brownie templado, helado de vainilla artesano</div>
+            </div>
+            <div class="plato-precio ms-3">6,50 €</div>
+          </div>
+          <div class="plato-card d-flex justify-content-between align-items-start">
+            <div>
+              <div class="plato-nombre">Helado de queso tetilla</div>
+              <div class="plato-desc">Helado artesano de queso tetilla, coulis de frutos rojos</div>
+            </div>
+            <div class="plato-precio ms-3">5,00 €</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galeria" class="seccion">
+  <div class="container">
+    <div class="text-center mb-4">
+      <p class="hero-eyebrow" style="color:var(--rojo)">Ambiente y cocina</p>
+      <h2 class="seccion-titulo">Galería</h2>
+      <div class="linea-roja centrada"></div>
+    </div>
+    <div class="galeria-grid">
+      <img class="grande" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&q=80" alt="Brasa y fuego en La Hoguera" />
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Plato principal" />
+      <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80" alt="Interior del restaurante" />
+      <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80" alt="Plato de pescado" />
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Mesa preparada" />
+      <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Postres" />
+    </div>
+  </div>
+</section>
+
+<section id="reservas" class="seccion seccion-crema">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 text-center">
+        <p class="hero-eyebrow" style="color:var(--rojo)">Reserva tu mesa</p>
+        <h2 class="seccion-titulo">¿Nos visits?</h2>
+        <div class="linea-roja centrada"></div>
+        <p class="mb-4" style="color:var(--gris);font-size:0.93rem">Rellena el formulario y te confirmaremos la reserva en menos de 24 horas.</p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <form class="reserva-form" onsubmit="enviarReserva(event)">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" class="form-control" placeholder="Tu nombre" required />
+            </div>
+            <div class="col-md-6">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" class="form-control" placeholder="+34 600 000 000" required />
+            </div>
+            <div class="col-md-6">
+              <label for="fecha">Fecha</label>
+              <input type="date" id="fecha" class="form-control" required />
+            </div>
+            <div class="col-md-3">
+              <label for="hora">Hora</label>
+              <select id="hora" class="form-select">
+                <option>13:00</option>
+                <option>13:30</option>
+                <option>14:00</option>
+                <option>14:30</option>
+                <option>20:00</option>
+                <option>20:30</option>
+                <option>21:00</option>
+                <option>21:30</option>
+                <option>22:00</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="personas">Personas</label>
+              <select id="personas" class="form-select">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>+6</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label for="notas">Notas o alergias</label>
+              <textarea id="notas" class="form-control" rows="3" placeholder="Alergias, silla de bebé, celebración especial..."></textarea>
+            </div>
+            <div class="col-12 text-center mt-2">
+              <button type="submit" class="btn-fuego">Solicitar reserva</button>
+            </div>
+          </div>
+        </form>
+        <div id="reserva-ok" class="text-center mt-4" style="display:none;">
+          <i class="bi bi-check-circle-fill" style="font-size:2.5rem;color:var(--rojo)"></i>
+          <p class="mt-2" style="font-size:0.95rem;color:var(--gris)">¡Gracias! Te confirmaremos la reserva por teléfono en breve.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="seccion">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-5">
+        <p class="hero-eyebrow" style="color:var(--rojo)">Dónde encontrarnos</p>
+        <h2 class="seccion-titulo">Contacto</h2>
+        <div class="linea-roja"></div>
+
+        <div class="contacto-dato">
+          <div class="contacto-icono"><i class="bi bi-geo-alt-fill"></i></div>
+          <div>
+            <h6>Dirección</h6>
+            <p>Rúa do Paseo 12<br>32001 Ourense, Galicia</p>
+          </div>
+        </div>
+        <div class="contacto-dato">
+          <div class="contacto-icono"><i class="bi bi-telephone-fill"></i></div>
+          <div>
+            <h6>Teléfono</h6>
+            <p>+34 988 000 111</p>
+          </div>
+        </div>
+        <div class="contacto-dato">
+          <div class="contacto-icono"><i class="bi bi-envelope-fill"></i></div>
+          <div>
+            <h6>Email</h6>
+            <p>hola@lahoguera.es</p>
+          </div>
+        </div>
+        <div class="contacto-dato">
+          <div class="contacto-icono"><i class="bi bi-clock-fill"></i></div>
+          <div>
+            <h6>Horario</h6>
+            <p>Martes a domingo<br>13:00–16:00 · 20:00–23:30<br><span style="color:var(--rojo);font-size:0.85rem">Lunes cerrado</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-7.8700%2C42.3300%2C-7.8400%2C42.3500&layer=mapnik"
+          width="100%"
+          height="420"
+          style="border:0;display:block;"
+          loading="lazy"
+          title="Ubicación de La Hoguera"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-4 mb-3 mb-md-0">
+        <div class="brand">La <span>Hoguera</span></div>
+        <div>Restaurante & Bar · Ourense desde 1998</div>
+      </div>
+      <div class="col-md-4 text-center mb-3 mb-md-0">
+        <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="social-link"><i class="bi bi-tiktok"></i></a>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <div>© 2025 La Hoguera · Todos los derechos reservados</div>
+        <div class="mt-1">Diseño web por <a href="#" style="color:rgba(255,255,255,0.6)">saamugp-dev</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function mostrarCat(id, btn) {
+    document.querySelectorAll('.menu-cat').forEach(el => el.classList.remove('activo'));
+    document.querySelectorAll('.cat-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('cat-' + id).classList.add('activo');
+    btn.classList.add('active');
+  }
+
+  function enviarReserva(e) {
+    e.preventDefault();
+    document.querySelector('.reserva-form').style.display = 'none';
+    document.getElementById('reserva-ok').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

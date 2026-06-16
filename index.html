@@ -23,7 +23,7 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: var(--font-body); color: var(--carbon); background: #fff; }
+    body { font-family: var(--font-body); color: var(--carbon); background: #fff; overflow-x: hidden; }
 
     /* ── Navbar ── */
     .navbar {
@@ -100,11 +100,11 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       border-radius: 0;
-      transition: background 0.2s, transform 0.15s;
+      transition: all 0.3s ease;
       text-decoration: none;
       display: inline-block;
     }
-    .btn-fuego:hover { background: var(--rojo-oscuro); color: #fff; transform: translateY(-1px); }
+    .btn-fuego:hover { background: var(--rojo-oscuro); color: #fff; transform: translateY(-3px); box-shadow: 0 4px 15px rgba(192, 57, 43, 0.4); }
     .btn-outline-fuego {
       border: 1px solid rgba(255,255,255,0.6);
       color: #fff;
@@ -113,12 +113,12 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       border-radius: 0;
-      transition: background 0.2s;
+      transition: all 0.3s ease;
       text-decoration: none;
       display: inline-block;
       margin-left: 1rem;
     }
-    .btn-outline-fuego:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .btn-outline-fuego:hover { background: rgba(255,255,255,0.15); color: #fff; transform: translateY(-3px); }
 
     /* ── Franja de datos ── */
     .franja {
@@ -199,7 +199,9 @@
     .plato-card {
       border-bottom: 1px solid #e8e2d9;
       padding: 1.2rem 0;
+      transition: transform 0.2s ease;
     }
+    .plato-card:hover { transform: translateX(4px); }
     .plato-card:last-child { border-bottom: none; }
     .plato-nombre {
       font-family: var(--font-display);
@@ -213,32 +215,53 @@
       color: var(--rojo);
       white-space: nowrap;
     }
+    
+    /* Animación dinámica para el cambio de platos */
     .menu-cat { display: none; }
-    .menu-cat.activo { display: block; }
-
-    /* ── Galería ── */
-    .galeria-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 6px;
+    .menu-cat.activo { 
+      display: block; 
+      animation: transicionSuave 0.5s ease forwards;
     }
-    .galeria-grid img {
+    @keyframes transicionSuave {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Nueva Galería Líquida Dinámica ── */
+    .contenedor-galeria {
+      position: relative;
       width: 100%;
-      height: 220px;
+    }
+    .galeria-item {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 240px;
+    }
+    .galeria-item img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.4s;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .galeria-grid img:hover { transform: scale(1.03); }
-    .galeria-grid .grande {
-      grid-column: 1 / 3;
-      height: 320px;
+    /* Efecto dinámico de cortina al pasar el dedo/ratón */
+    .galeria-item::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to top, rgba(26,26,26,0.5), rgba(26,26,26,0));
+      opacity: 0;
+      transition: opacity 0.4s ease;
     }
-    @media (max-width: 768px) {
-      .galeria-grid { grid-template-columns: 1fr 1fr; }
-      .galeria-grid .grande { grid-column: 1 / 3; height: 200px; }
-      .galeria-grid img { height: 160px; }
+    .galeria-item:hover img {
+      transform: scale(1.08);
+    }
+    .galeria-item:hover::after {
+      opacity: 1;
+    }
+    @media (max-width: 576px) {
+      .galeria-item { height: 160px; } /* Altura optimizada para móviles pequeños */
     }
 
     /* ── Reservas ── */
@@ -256,10 +279,12 @@
       font-size: 0.93rem;
       padding: 0.65rem 0.9rem;
       color: var(--carbon);
+      transition: all 0.3s ease;
     }
     .reserva-form .form-control:focus, .reserva-form .form-select:focus {
       box-shadow: none;
       border-color: var(--rojo);
+      background-color: #fdfcf9;
     }
 
     /* ── Contacto ── */
@@ -568,13 +593,38 @@
       <h2 class="seccion-titulo">Galería</h2>
       <div class="linea-roja centrada"></div>
     </div>
-    <div class="galeria-grid">
-      <img class="grande" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&q=80" alt="Brasa y fuego en La Hoguera" />
-      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Plato principal" />
-      <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80" alt="Interior del restaurante" />
-      <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80" alt="Plato de pescado" />
-      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Mesa preparada" />
-      <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Postres" />
+    
+    <div class="row row-cols-2 row-cols-md-3 g-2 g-md-3 contenedor-galeria">
+      <div class="col">
+        <div class="galeria-item">
+          <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Brasa y fuego en La Hoguera" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="galeria-item">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Plato principal" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="galeria-item">
+          <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80" alt="Interior del restaurante" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="galeria-item">
+          <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80" alt="Plato de pescado" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="galeria-item">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Mesa preparada" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="galeria-item">
+          <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Postres" />
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -584,7 +634,7 @@
     <div class="row justify-content-center">
       <div class="col-lg-7 text-center">
         <p class="hero-eyebrow" style="color:var(--rojo)">Reserva tu mesa</p>
-        <h2 class="seccion-titulo">¿Nos visits?</h2>
+        <h2 class="seccion-titulo">¿Nos visitas?</h2>
         <div class="linea-roja centrada"></div>
         <p class="mb-4" style="color:var(--gris);font-size:0.93rem">Rellena el formulario y te confirmaremos la reserva en menos de 24 horas.</p>
       </div>
@@ -713,7 +763,7 @@
         <a href="#" class="social-link"><i class="bi bi-tiktok"></i></a>
       </div>
       <div class="col-md-4 text-md-end">
-        <div>© 2025 La Hoguera · Todos los derechos reservados</div>
+        <div>© 2026 La Hoguera · Todos los derechos reservados</div>
         <div class="mt-1">Diseño web por <a href="#" style="color:rgba(255,255,255,0.6)">saamugp-dev</a></div>
       </div>
     </div>
